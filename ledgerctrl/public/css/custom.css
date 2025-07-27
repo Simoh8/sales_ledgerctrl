@@ -1,0 +1,12 @@
+.autocomplete-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+}
+
+.autocomplete-list li:hover {
+  background-color: #f5f5f5;
+}

@@ -29,6 +29,15 @@ def add_cors_headers(response):
 
 # Includes in <head>
 # ------------------
+app_include_js = [
+    "https://unpkg.com/leaflet@1.9.3/dist/leaflet.js",
+        "https://maps.googleapis.com/maps/api/js?key=AIzaSyClcVmsDzi8fZ_pXoIzBqZHhXj7_Yvund0&libraries=places",
+    "/assets/ledgerctrl/js/address_map.js",
+        "/assets/ledgerctrl/css/custom.css"]
+
+app_include_css = [
+    "https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/ledgerctrl/css/ledgerctrl.css"

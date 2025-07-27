@@ -1,6 +1,8 @@
 import frappe
 import frappe.auth
+import json
 from frappe.utils import now
+from frappe import _  # ✅ REQUIRED for frappe.throw to work
 
 @frappe.whitelist(allow_guest=True)
 def user_logn(usr, passwd):
@@ -10,7 +12,6 @@ def user_logn(usr, passwd):
         login_mngr.post_login()
     except frappe.exceptions.AuthenticationError as e:
         frappe.clear_messages()
-
         frappe.local.response["message"] = {
             "success_key": 0,
             "message": "Invalid login details. Please try again.",
@@ -21,12 +22,14 @@ def user_logn(usr, passwd):
     user = frappe.get_doc('User', frappe.session.user)
     api_secret = compose_api_key(frappe.session.user)
 
+    # ✅ Correct placement of sid
+    frappe.local.response["sid"] = frappe.session.sid
+
     frappe.local.response["message"] = {
         "success_key": 1,
         "message": "Login successful",
         "timestamp": now(),
         "data": {
-            "sid": frappe.session.sid,
             "api_key": user.api_key,
             "api_secret": api_secret,
             "username": user.username,
@@ -34,10 +37,12 @@ def user_logn(usr, passwd):
             "full_name": user.full_name,
             "roles": [r.role for r in user.get("roles")],
             "last_login": user.last_login,
+            "mobile_no": user.mobile_no,
+            "phone": user.phone,
+            "language": user.language
         }
     }
 
-    
 def compose_api_key(user):
     user_doc = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=23)
@@ -46,26 +51,24 @@ def compose_api_key(user):
         user_doc.api_key = frappe.generate_hash(length=23)
 
     user_doc.api_secret = api_secret
-    user_doc.save(ignore_permissions=True)  # allow saving if called from guest context
-
+    user_doc.save(ignore_permissions=True)
     return api_secret
 
 
-
-@frappe.whitelist()
+@frappe.whitelist( allow_guest=True)
 def get_user_info():
-    """
-    Fetch user details using active login session (sid).
-    This works only if the client includes 'sid' cookie in requests.
-    """
-
     try:
+        
         user = frappe.session.user
+        
 
         if not user or user == "Guest":
             frappe.throw(_("Invalid or expired session. Please login again."), frappe.AuthenticationError)
 
         user_doc = frappe.get_doc("User", user)
+        print("The user doc is", user_doc)
+        
+        
 
         return {
             "success_key": 1,
@@ -79,7 +82,9 @@ def get_user_info():
                 "roles": [r.role for r in user_doc.roles],
                 "enabled": user_doc.enabled,
                 "last_login": user_doc.last_login,
-                "language": user_doc.language
+                "language": user_doc.language,
+                "profile_img": user_doc.user_image  # ✅ Include image URL here
+                
             }
         }
 
@@ -97,3 +102,19 @@ def get_user_info():
             "success_key": 0,
             "message": f"Error: {str(e)}"
         }
+
+@frappe.whitelist(allow_guest=False)
+def update_user_info(first_name=None, middle_name=None, last_name=None, mobile_no=None):
+    user = frappe.session.user
+    if user == "Guest":
+        frappe.throw("Login required")
+
+    doc = frappe.get_doc("User", user)
+    if first_name: doc.first_name = first_name
+    if middle_name is not None: doc.middle_name = middle_name  # can be blank
+    if last_name is not None: doc.last_name = last_name
+    if mobile_no: doc.mobile_no = mobile_no
+
+    doc.save(ignore_permissions=True)
+
+    return {"success": True, "message": "Updated successfully"}
