@@ -31,7 +31,7 @@ def add_cors_headers(response):
 # ------------------
 app_include_js = [
     "https://unpkg.com/leaflet@1.9.3/dist/leaflet.js",
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyClcVmsDzi8fZ_pXoIzBqZHhXj7_Yvund0&libraries=places",
+        "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places",
     "/assets/ledgerctrl/js/address_map.js",
         "/assets/ledgerctrl/css/custom.css"]
 
