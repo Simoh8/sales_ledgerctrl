@@ -25,15 +25,20 @@ def add_cors_headers(response):
 # 		"route": "/ledgerctrl",
 # 		"has_permission": "ledgerctrl.api.permission.has_app_permission"
 # 	}
-# ]
+# ]rnnUCClWCP0U2wHL8trUOuJrgkMuJwMukdoCLbwC
 
 # Includes in <head>
 # ------------------
 app_include_js = [
     "https://unpkg.com/leaflet@1.9.3/dist/leaflet.js",
-        "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places",
+    "https://maps.googleapis.com/maps/api/js?key=AIzaSyClcVmsDzi8fZ_pXoIzBqZHhXj7_Yvund0&libraries=places",
     "/assets/ledgerctrl/js/address_map.js",
-        "/assets/ledgerctrl/css/custom.css"]
+        ]
+
+
+# doctype_js = {
+#     "Address": "ledgerctrl/js/address_map.js"
+# }
 
 app_include_css = [
     "https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
