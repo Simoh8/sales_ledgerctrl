@@ -33,6 +33,7 @@ app_include_js = [
     "https://unpkg.com/leaflet@1.9.3/dist/leaflet.js",
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyClcVmsDzi8fZ_pXoIzBqZHhXj7_Yvund0&libraries=places",
     "/assets/ledgerctrl/js/address_map.js",
+    "/assets/ledgerctrl/js/delivery_note.js",
         ]
 
 
@@ -164,6 +165,12 @@ app_include_css = [
 # 		"on_trash": "method"
 # 	}
 # }
+doc_events = {
+    "Delivery Note": {
+        "before_submit": "ledgerctrl.ledgerctrl.api.delivery_note_events.generate_otp",
+        "before_save": "ledgerctrl.ledgerctrl.api.delivery_note_events.validate_otp"
+    }
+}
 
 # Scheduled Tasks
 # ---------------

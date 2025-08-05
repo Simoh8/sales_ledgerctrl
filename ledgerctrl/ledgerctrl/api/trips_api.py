@@ -34,7 +34,6 @@ def get_assigned_orders():
 
         items = []
         for stop in stops:
-            # Get item list from delivery note (if exists)
             note_items = []
             if stop.delivery_note:
                 note_items = frappe.get_all(
