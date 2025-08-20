@@ -22,7 +22,6 @@ def user_logn(usr, passwd):
     user = frappe.get_doc('User', frappe.session.user)
     api_secret = compose_api_key(frappe.session.user)
 
-    # ✅ Correct placement of sid
     frappe.local.response["sid"] = frappe.session.sid
 
     frappe.local.response["message"] = {

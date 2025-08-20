@@ -109,7 +109,7 @@ class DeliveryNoteCloser:
         }
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def close_delivery_note_with_otp(delivery_note_name: str, otp_input: str):
     """API endpoint to close a Delivery Note using OTP (used by driver apps)."""
     if not delivery_note_name or not otp_input:
